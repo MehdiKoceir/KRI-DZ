@@ -1,0 +1,7 @@
+{
+  "name": "KriDZ — Location Immobilière en Algérie",
+  "description": "Plateforme moderne de location immobilière en Algérie. Trouvez appartements, villas, studios et logements étudiants à Alger, Oran, Blida, Constantine et dans toute l'Algérie.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
