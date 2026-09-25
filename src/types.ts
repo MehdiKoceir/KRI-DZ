@@ -48,6 +48,8 @@ export interface Property {
   agencyName?: string;
   viewsCount: number;
   inquiriesCount: number;
+  rating?: number;
+  reviewsCount?: number;
   createdAt: string;
 }
 
@@ -65,6 +67,7 @@ export interface User {
   preferredCity?: string;
   budgetMinDZD?: number;
   budgetMaxDZD?: number;
+  favorites?: string[];
   createdAt: string;
 }
 
@@ -107,4 +110,33 @@ export interface AlgerianWilaya {
   arName: string;
   popularCities: string[];
   image: string;
+}
+
+export interface RecentSearch {
+  id: string;
+  label: string;
+  details?: string;
+  filters: Partial<FilterState>;
+  timestamp: number;
+}
+
+export interface ReviewCriteriaRatings {
+  location: number; // 1-5
+  cleanliness: number; // 1-5
+  communication: number; // 1-5
+  valueForMoney: number; // 1-5
+}
+
+export interface Review {
+  id: string;
+  propertyId: string;
+  tenantId: string;
+  tenantName: string;
+  tenantAvatar?: string;
+  rating: number; // 1-5
+  criteriaRatings?: ReviewCriteriaRatings;
+  comment: string;
+  rentalPeriod?: string;
+  isVerifiedTenant?: boolean;
+  createdAt: string;
 }

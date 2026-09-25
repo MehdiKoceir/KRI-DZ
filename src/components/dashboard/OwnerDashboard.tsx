@@ -16,6 +16,11 @@ import { useApp } from '../../context/AppContext';
 import { Property, PropertyType } from '../../types';
 import { ALGERIAN_WILAYAS } from '../../data/algerianCities';
 import { formatDZD, formatPriceOnly, formatShortDate } from '../../utils/format';
+import algerianLivingRoom from '../../assets/images/algerian_living_room_1789648663888.jpg';
+import algerianStudentStudio from '../../assets/images/algerian_student_studio_1789648678030.jpg';
+import algerianKitchen from '../../assets/images/algerian_kitchen_1789648694133.jpg';
+import algerianBedroom from '../../assets/images/algerian_bedroom_1789648707794.jpg';
+import algerianVilla from '../../assets/images/algerian_villa_1789648722975.jpg';
 
 export const OwnerDashboard: React.FC = () => {
   const { 
@@ -67,7 +72,7 @@ export const OwnerDashboard: React.FC = () => {
   const [elevator, setElevator] = useState(false);
   const [parking, setParking] = useState(true);
   const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80');
+  const [imageUrl, setImageUrl] = useState(algerianLivingRoom);
   const [formSuccess, setFormSuccess] = useState(false);
 
   // Handle new listing submission
@@ -107,8 +112,9 @@ export const OwnerDashboard: React.FC = () => {
       isAvailable: true,
       availabilityDate: 'Immédiate',
       images: [
-        imageUrl || 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-        'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80'
+        imageUrl || algerianLivingRoom,
+        algerianKitchen,
+        algerianBedroom
       ],
       description: description || `Très bel appartement à louer situé à ${neighborhood}, ${city}. Idéal pour résidence calme, proche de toutes commodités.`,
       amenities: amenitiesList,
@@ -141,7 +147,7 @@ export const OwnerDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/70 py-8">
+    <div className="min-h-screen bg-white py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header bar */}
@@ -791,16 +797,39 @@ export const OwnerDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* Photo URL */}
+              {/* Photo Selection / Algerian photo presets */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Photo principale (URL)
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">
+                  Photo principale du logement (Photos authentiques algériennes)
                 </label>
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 mb-3">
+                  {[
+                    { label: 'Salon Algérien (Seddari)', img: algerianLivingRoom },
+                    { label: 'Studio Étudiant', img: algerianStudentStudio },
+                    { label: 'Cuisine & Faïence', img: algerianKitchen },
+                    { label: 'Chambre à Coucher', img: algerianBedroom },
+                    { label: 'Villa & Patio Mauresque', img: algerianVilla },
+                  ].map((preset, i) => (
+                    <button
+                      type="button"
+                      key={i}
+                      onClick={() => setImageUrl(preset.img)}
+                      className={`relative rounded-xl overflow-hidden aspect-[4/3] border-2 transition-all group ${
+                        imageUrl === preset.img ? 'border-slate-900 ring-2 ring-slate-900/20' : 'border-slate-200 hover:border-slate-400'
+                      }`}
+                    >
+                      <img src={preset.img} alt={preset.label} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      <span className="absolute inset-x-0 bottom-0 bg-slate-950/80 text-[10px] font-bold text-white px-1.5 py-0.5 truncate text-center block">
+                        {preset.label}
+                      </span>
+                    </button>
+                  ))}
+                </div>
                 <input
-                  type="url"
+                  type="text"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
+                  placeholder="URL d'image ou sélectionnez un modèle ci-dessus..."
                   className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:bg-white outline-none focus:border-slate-400"
                 />
               </div>

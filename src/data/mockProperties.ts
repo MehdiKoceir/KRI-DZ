@@ -1,10 +1,15 @@
 import { Property } from '../types';
+import algerianLivingRoom from '../assets/images/algerian_living_room_1789648663888.jpg';
+import algerianStudentStudio from '../assets/images/algerian_student_studio_1789648678030.jpg';
+import algerianKitchen from '../assets/images/algerian_kitchen_1789648694133.jpg';
+import algerianBedroom from '../assets/images/algerian_bedroom_1789648707794.jpg';
+import algerianVilla from '../assets/images/algerian_villa_1789648722975.jpg';
 
 export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-001',
     title: 'Superbe Appartement F4 Haut Standing avec Vue Panoramique',
-    description: 'Magnifique F4 de 135 m² situé dans une résidence fermée et sécurisée à Hydra. L\'appartement dispose d\'un grand salon lumineux ouvert sur balcon, cuisine moderne entièrement équipée, suite parentale avec dressing et salle de bain privative, 2 chambres enfants, et une deuxième salle d\'eau. Climatisation réversible dans chaque pièce, chauffage central, bâche à eau de grande capacité avec suppresseur automatique. Garage privatif en sous-sol avec accès direct par ascenseur.',
+    description: 'Magnifique F4 de 135 m² situé dans une résidence fermée et sécurisée à Hydra. L\'appartement dispose d\'un grand salon algérien lumineux avec banquettes seddari haut de gamme ouvert sur balcon, cuisine moderne entièrement équipée avec faïence murale et séchoir, suite parentale avec dressing et salle de bain privative, 2 chambres enfants, et une deuxième salle d\'eau. Climatisation réversible dans chaque pièce, chauffage central, bâche à eau de grande capacité avec suppresseur automatique. Garage privatif en sous-sol avec accès direct par ascenseur.',
     propertyType: 'apartment',
     city: 'Hydra',
     wilayaCode: '16',
@@ -36,10 +41,10 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Interphone & Caméras'
     ],
     images: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1556912172-45b7abe8b7e1?auto=format&fit=crop&w=1200&q=80'
+      algerianLivingRoom,
+      algerianBedroom,
+      algerianKitchen,
+      'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=1200&q=80'
     ],
     ownerId: 'owner-agency-1',
     ownerName: 'Agence Immobilière El Bahdja',
@@ -55,7 +60,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-002',
     title: 'Studio Cosy Meublé Idéal Étudiant ou Jeune Cadre - Bab Ezzouar',
-    description: 'Charmant studio de 38 m² rénové à neuf situé à 5 minutes à pied de l\'Université USTHB et de la station Tramway Bab Ezzouar. Comprend un espace nuit avec literie confortable, bureau de travail avec connexion fibre optique haut débit, kitchenette équipée (plaque, frigo, micro-ondes), et salle de bain moderne. Immeuble calme avec interphone, bâche à eau collective avec distribution permanente H24.',
+    description: 'Charmant studio de 38 m² rénové à neuf situé à 5 minutes à pied de l\'Université USTHB et de la station Tramway Bab Ezzouar. Comprend un espace nuit avec literie confortable et sol carrelé clair, bureau de travail avec connexion fibre optique haut débit, fenêtre sécurisée par barreaudage avec voilage blanc, kitchenette équipée (plaque, frigo, micro-ondes), et salle de bain moderne. Immeuble calme avec interphone, bâche à eau collective avec distribution permanente H24.',
     propertyType: 'student',
     city: 'Bab Ezzouar',
     wilayaCode: '16',
@@ -85,9 +90,9 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Interphone & Caméras'
     ],
     images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=1200&q=80'
+      algerianStudentStudio,
+      'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80'
     ],
     ownerId: 'owner-particulier-1',
     ownerName: 'Youcef Benali',
@@ -102,7 +107,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-003',
     title: 'Appartement F3 Moderne et Ensoleillé - Blida Centre',
-    description: 'Très bel appartement F3 de 92 m² au 2ème étage d\'un immeuble propre au cœur de Blida, à proximité du boulevard Larbi Tebessi et de la gare. Salon spacieux avec porte-fenêtre donnant sur un balcon vue sur les montagnes de Chréa. 2 grandes chambres, cuisine semi-équipée, citerne d\'eau 1000L privée avec moteur neuf. Idéal pour petite famille ou couple. Voisinage très respectueux.',
+    description: 'Très bel appartement F3 de 92 m² au 2ème étage d\'un immeuble propre au cœur de Blida, à proximité du boulevard Larbi Tebessi et de la gare. Salon spacieux avec sol carrelé clair et porte-fenêtre donnant sur un balcon vue sur les montagnes de Chréa. 2 grandes chambres, cuisine avec faïence murale et rangements, citerne d\'eau 1000L privée avec moteur neuf. Idéal pour petite famille ou couple. Voisinage très respectueux.',
     propertyType: 'apartment',
     city: 'Blida Centre',
     wilayaCode: '09',
@@ -130,9 +135,10 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Interphone & Caméras'
     ],
     images: [
-      'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560185127-6ed189bf02f4?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80',
+      algerianKitchen,
+      'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?auto=format&fit=crop&w=1200&q=80',
+      algerianBedroom
     ],
     ownerId: 'owner-particulier-2',
     ownerName: 'Mourad Cherif',
@@ -147,7 +153,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-004',
     title: 'Spacieux Duplex Contemporain Front de Mer - Oran Akid Lotfi',
-    description: 'Superbe duplex de standing R+1 d\'une superficie de 180 m² situé dans le quartier très recherché d\'Akid Lotfi à Oran. Salon d\'angle triple exposition avec vue mer dégagée, cuisine américaine avec îlot central, 3 suites avec salles de bain attenantes, grande terrasse de 35 m². Climatisation centralisée, ascenseur codé, sécurité 24h/24 avec gardiennage, double place de stationnement au sous-sol.',
+    description: 'Superbe duplex de standing R+1 d\'une superficie de 180 m² situé dans le quartier très recherché d\'Akid Lotfi à Oran. Salon d\'angle avec arcades mauresques travaillées et triple exposition avec vue mer dégagée, cuisine américaine avec îlot central, 3 suites avec salles de bain attenantes, grande terrasse de 35 m². Climatisation centralisée, ascenseur codé, sécurité 24h/24 avec gardiennage, double place de stationnement au sous-sol.',
     propertyType: 'duplex',
     city: 'Oran',
     wilayaCode: '31',
@@ -179,9 +185,10 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Interphone & Caméras'
     ],
     images: [
-      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?auto=format&fit=crop&w=1200&q=80',
+      algerianLivingRoom,
+      algerianBedroom,
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80'
     ],
     ownerId: 'owner-agency-2',
     ownerName: 'Cabinet Immobilier Wahran Prestige',
@@ -197,7 +204,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-005',
     title: 'Villa R+1 avec Jardin Privatif & Garage - Ouled Yaïch, Blida',
-    description: 'Belle villa familiale individuelle de 220 m² bâtie sur 350 m² de terrain dans un lotissement résidentiel très calme à Ouled Yaïch, Blida. Au RDC : double salon marocain et européen, grande cuisine dinatoire ouvrant sur jardin arboré, salle de bain et garage fermé pour 2 véhicules. À l\'étage : 4 chambres spacieuses avec placards intégrés, balcon et solarium. Citerne enterrée de 5000L, eau continue H24.',
+    description: 'Belle villa familiale individuelle de 220 m² bâtie sur 350 m² de terrain dans un lotissement résidentiel très calme à Ouled Yaïch, Blida. Au RDC : double salon avec arcades mauresques et plâtre sculpté (djess), zellige traditionnel, grande cuisine dinatoire ouvrant sur jardin arboré d\'orangers et citronniers, salle de bain et garage fermé pour 2 véhicules. À l\'étage : 4 chambres spacieuses avec placards intégrés, balcon et solarium. Citerne enterrée de 5000L, eau continue H24.',
     propertyType: 'villa',
     city: 'Ouled Yaïch',
     wilayaCode: '09',
@@ -225,9 +232,10 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Interphone & Caméras'
     ],
     images: [
-      'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1200&q=80'
+      algerianVilla,
+      'https://images.unsplash.com/photo-1582533561751-ef6f6ab93a2e?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80',
+      algerianLivingRoom
     ],
     ownerId: 'owner-particulier-3',
     ownerName: 'Hadj Abdelkader',
@@ -242,7 +250,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-006',
     title: 'Appartement F3 Neuf et Calme - Chlef Hay Bensouna',
-    description: 'Appartement F3 neuf de 85 m² situé à Hay Bensouna dans un immeuble récent avec interphone et syndic actif. Proche de toutes commodités : écoles, commerces, polyclinique et transports. Grand séjour aéré, 2 chambres confortables, cuisine avec rangements, salle de bain avec chauffe-bain et bâche à eau. Stationnement aisé devant l\'immeuble.',
+    description: 'Appartement F3 neuf de 85 m² situé à Hay Bensouna dans un immeuble récent avec interphone et syndic actif. Proche de toutes commodités : écoles, commerces, polyclinique et transports. Grand séjour aéré avec sol carrelé clair et voilages, 2 chambres confortables, cuisine carrelée avec rangements et accès au balcon séchoir, salle de bain avec chauffe-bain et bâche à eau. Stationnement aisé devant l\'immeuble.',
     propertyType: 'apartment',
     city: 'Chlef',
     wilayaCode: '02',
@@ -268,8 +276,9 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Interphone & Caméras'
     ],
     images: [
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80'
+      'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=1200&q=80',
+      algerianKitchen,
+      'https://images.unsplash.com/photo-1540518614846-7ede433c4b13?auto=format&fit=crop&w=1200&q=80'
     ],
     ownerId: 'owner-particulier-4',
     ownerName: 'Sofiane Mansouri',
@@ -284,7 +293,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-007',
     title: 'Chambre Indépendante Meublée en Colocation Étudiante - USTHB / Bab Ezzouar',
-    description: 'Chambre individuelle entièrement meublée dans un grand F4 dédié à la colocation étudiante (3 étudiants maximum). Situé dans la cité 8 Mai 45 à 8 minutes de marche du campus USTHB Bab Ezzouar. Lit une place, bureau avec lampe de travail, armoire penderie, et Wi-Fi haut débit inclus. Cuisine partagée équipée (cuisinière, réfrigérateur, micro-ondes, machine à laver) et salle de bain. Citerne avec eau H24.',
+    description: 'Chambre individuelle entièrement meublée dans un grand F4 dédié à la colocation étudiante (3 étudiants maximum). Situé dans la cité 8 Mai 45 à 8 minutes de marche du campus USTHB Bab Ezzouar. Lit une place, bureau avec lampe de travail, armoire penderie, et Wi-Fi haut débit inclus. Cuisine partagée équipée (cuisinière, cafetière brik, réfrigérateur, micro-ondes, machine à laver) et salle de bain. Citerne avec eau H24.',
     propertyType: 'student',
     city: 'Bab Ezzouar',
     wilayaCode: '16',
@@ -312,8 +321,9 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Proximité Université'
     ],
     images: [
-      'https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80'
+      algerianStudentStudio,
+      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
+      algerianKitchen
     ],
     ownerId: 'owner-particulier-1',
     ownerName: 'Youcef Benali',
@@ -328,7 +338,7 @@ export const INITIAL_PROPERTIES: Property[] = [
   {
     id: 'kri-008',
     title: 'Appartement F4 Moderne avec Place de Garage - Constantine Ali Mendjeli',
-    description: 'Joli F4 de 105 m² au 4ème étage avec ascenseur dans la nouvelle ville Ali Mendjeli (UV 5), à deux pas du Tramway et de l\'université Abdelhamid Mehri (Constantine 2). Appartement très propre, lumineux, avec chauffage central gaz de ville, cuisine moderne avec balcon séchoir, grand salon familial, et réservoir d\'eau individuel de 800L.',
+    description: 'Joli F4 de 105 m² au 4ème étage avec ascenseur dans la nouvelle ville Ali Mendjeli (UV 5), à deux pas du Tramway et de l\'université Abdelhamid Mehri (Constantine 2). Appartement très propre, lumineux, avec chauffage central gaz de ville, cuisine moderne avec faïence et balcon séchoir, grand salon familial avec banquettes et tapis, et réservoir d\'eau individuel de 800L.',
     propertyType: 'apartment',
     city: 'Constantine',
     wilayaCode: '25',
@@ -358,8 +368,10 @@ export const INITIAL_PROPERTIES: Property[] = [
       'Proximité Université'
     ],
     images: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80'
+      algerianLivingRoom,
+      algerianKitchen,
+      algerianBedroom,
+      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80'
     ],
     ownerId: 'owner-agency-1',
     ownerName: 'Agence Immobilière El Bahdja',
@@ -373,3 +385,4 @@ export const INITIAL_PROPERTIES: Property[] = [
     createdAt: '2026-03-04T15:20:00Z'
   }
 ];
+

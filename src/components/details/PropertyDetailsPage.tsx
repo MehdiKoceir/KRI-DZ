@@ -83,7 +83,7 @@ export const PropertyDetailsPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/70 py-8">
+    <div className="min-h-screen bg-white py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Navigation bar / Back */}
@@ -109,11 +109,16 @@ export const PropertyDetailsPage: React.FC = () => {
 
             <button
               onClick={() => toggleFavorite(property.id)}
-              className="px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-rose-600 font-bold text-xs shadow-xs flex items-center gap-1.5 transition-colors"
+              className={`px-3.5 py-2 rounded-xl font-bold text-xs shadow-xs flex items-center gap-1.5 transition-all ${
+                favorited
+                  ? 'bg-rose-50 border border-rose-200 text-rose-600 hover:bg-rose-100'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:border-slate-300'
+              }`}
               id="details-favorite-btn"
+              title={favorited ? 'Retirer des favoris' : 'Sauvegarder dans vos favoris'}
             >
-              <Heart className={`w-4 h-4 ${favorited ? 'text-rose-500 fill-rose-500' : ''}`} />
-              <span>{favorited ? 'Sauvegardé' : 'Sauvegarder'}</span>
+              <Heart className={`w-4 h-4 transition-transform active:scale-125 ${favorited ? 'text-rose-500 fill-rose-500' : 'text-slate-500'}`} />
+              <span>{favorited ? 'Sauvegardé dans vos favoris' : 'Sauvegarder'}</span>
             </button>
           </div>
         </div>
@@ -127,6 +132,7 @@ export const PropertyDetailsPage: React.FC = () => {
               src={property.images[activeImageIndex] || property.images[0]}
               alt={property.title}
               className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
 
@@ -166,7 +172,12 @@ export const PropertyDetailsPage: React.FC = () => {
                       : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt={`Photo ${idx + 1}`} className="w-full h-full object-cover" />
+                  <img 
+                    src={img} 
+                    alt={`Photo ${idx + 1}`} 
+                    className="w-full h-full object-cover" 
+                    referrerPolicy="no-referrer"
+                  />
                 </button>
               ))}
             </div>
@@ -415,6 +426,21 @@ export const PropertyDetailsPage: React.FC = () => {
                   id="details-inquiry-btn"
                 >
                   <span>Envoyer un message au bailleur</span>
+                </button>
+
+                {/* Favorite Toggle Button in Sidebar */}
+                <button
+                  type="button"
+                  onClick={() => toggleFavorite(property.id)}
+                  className={`w-full py-3 rounded-xl border font-bold text-xs shadow-xs transition-all flex items-center justify-center gap-2 ${
+                    favorited
+                      ? 'bg-rose-50 border-rose-200 text-rose-600 hover:bg-rose-100'
+                      : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300'
+                  }`}
+                  id="details-sidebar-favorite-btn"
+                >
+                  <Heart className={`w-4 h-4 transition-transform active:scale-125 ${favorited ? 'text-rose-500 fill-rose-500' : 'text-slate-400'}`} />
+                  <span>{favorited ? 'Enregistré dans vos favoris' : 'Sauvegarder dans mes favoris'}</span>
                 </button>
               </div>
 

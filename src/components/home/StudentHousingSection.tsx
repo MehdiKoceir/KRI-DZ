@@ -15,13 +15,13 @@ export const StudentHousingSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
+    <section className="py-16 sm:py-20 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Block with Algerian Campus Badges */}
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-200 text-xs font-semibold text-slate-700 mb-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 border border-slate-200 text-xs font-semibold text-slate-700 mb-3">
               <GraduationCap className="w-3.5 h-3.5 text-slate-600" />
               <span>Logements pour étudiants</span>
             </div>

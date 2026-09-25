@@ -25,7 +25,8 @@ export const Navbar: React.FC = () => {
     logout, 
     favorites, 
     language, 
-    setLanguage 
+    setLanguage,
+    setActiveTenantTab
   } = useApp();
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -166,19 +167,16 @@ export const Navbar: React.FC = () => {
             {/* Favorites Icon */}
             <button
               onClick={() => {
-                if (user?.role === 'tenant') {
-                  handleNav('tenant-dashboard');
-                } else {
-                  handleNav('browse');
-                }
+                setActiveTenantTab('favorites');
+                handleNav('tenant-dashboard');
               }}
-              className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-colors"
-              title="Mes favoris"
+              className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all"
+              title={favorites.length > 0 ? `Mes favoris (${favorites.length})` : 'Mes favoris'}
               id="navbar-favorites-btn"
             >
-              <Heart className={`w-5 h-5 ${favorites.length > 0 ? 'text-slate-900 fill-slate-900' : ''}`} />
+              <Heart className={`w-5 h-5 transition-colors ${favorites.length > 0 ? 'text-rose-500 fill-rose-500' : 'text-slate-600'}`} />
               {favorites.length > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-slate-900 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center shadow-xs animate-in zoom-in-50">
                   {favorites.length}
                 </span>
               )}
@@ -365,6 +363,24 @@ export const Navbar: React.FC = () => {
             <span className="text-[10px] bg-slate-100 text-slate-700 font-bold px-2 py-0.5 rounded">
               Universités
             </span>
+          </button>
+
+          <button
+            onClick={() => {
+              setActiveTenantTab('favorites');
+              handleNav('tenant-dashboard');
+            }}
+            className="w-full text-left px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:text-slate-950 flex items-center justify-between"
+          >
+            <span className="flex items-center gap-2.5">
+              <Heart className={`w-4 h-4 ${favorites.length > 0 ? 'text-rose-500 fill-rose-500' : 'text-slate-500'}`} />
+              Mes Biens Favoris
+            </span>
+            {favorites.length > 0 && (
+              <span className="text-[10px] bg-rose-50 text-rose-700 font-bold px-2 py-0.5 rounded-full border border-rose-200">
+                {favorites.length}
+              </span>
+            )}
           </button>
 
           <div className="pt-2 border-t border-slate-100 space-y-2">

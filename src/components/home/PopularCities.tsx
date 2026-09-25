@@ -47,6 +47,7 @@ export const PopularCities: React.FC = () => {
                   alt={wilaya.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                 />
                 
                 {/* Gradient overlay */}

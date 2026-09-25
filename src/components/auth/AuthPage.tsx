@@ -7,7 +7,9 @@ import {
   Building, 
   Building2, 
   ArrowRight, 
-  Home
+  Home,
+  Loader2,
+  ShieldCheck
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { UserRole } from '../../types';
@@ -16,7 +18,8 @@ export const AuthPage: React.FC = () => {
   const { 
     authMode, 
     authRoleIntent, 
-    login, 
+    signInWithFirebase,
+    signUpWithFirebase,
     loginAsDemo, 
     navigateTo 
   } = useApp();
@@ -33,36 +36,27 @@ export const AuthPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(true);
   const [acceptTerms, setAcceptTerms] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setErrorMsg('Veuillez renseigner votre email et mot de passe.');
       return;
     }
 
-    // Perform sign-in (or switch to demo user based on email)
-    if (email.includes('owner') || email.includes('benali') || email.includes('immo')) {
-      loginAsDemo('owner');
-    } else if (email.includes('agency') || email.includes('bahdja')) {
-      loginAsDemo('agency');
-    } else {
-      // Default to tenant or created user
-      login({
-        id: `user-${Date.now()}`,
-        name: name || email.split('@')[0] || 'Locataire',
-        email,
-        phone: phone || '+213 550 00 00 00',
-        role: role,
-        preferredCity: 'Alger',
-        budgetMinDZD: 30000,
-        budgetMaxDZD: 70000,
-        createdAt: new Date().toISOString()
-      });
+    setIsLoading(true);
+    setErrorMsg('');
+
+    const res = await signInWithFirebase(email.trim(), password);
+    setIsLoading(false);
+
+    if (!res.success) {
+      setErrorMsg(res.error || 'Erreur lors de la connexion.');
     }
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !email.trim() || !password) {
       setErrorMsg('Veuillez remplir tous les champs obligatoires.');
@@ -73,19 +67,27 @@ export const AuthPage: React.FC = () => {
       return;
     }
 
-    login({
-      id: `user-${Date.now()}`,
-      name,
-      email,
-      phone: phone || '+213 550 00 00 00',
+    setIsLoading(true);
+    setErrorMsg('');
+
+    const res = await signUpWithFirebase({
+      name: name.trim(),
+      email: email.trim(),
+      password,
+      phone: phone.trim() || '+213 550 00 00 00',
       role,
-      agencyName: role === 'agency' ? (agencyName || 'Mon Agence Immobilière') : undefined,
-      createdAt: new Date().toISOString()
+      agencyName: role === 'agency' ? (agencyName.trim() || 'Mon Agence Immobilière') : undefined
     });
+
+    setIsLoading(false);
+
+    if (!res.success) {
+      setErrorMsg(res.error || 'Erreur lors de la création du compte.');
+    }
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)] bg-slate-50/70 py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="min-h-[calc(100vh-80px)] bg-white py-12 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-md w-full space-y-8">
         
         {/* Header Branding */}
@@ -200,11 +202,21 @@ export const AuthPage: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2"
+                disabled={isLoading}
+                className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-70 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                 id="auth-submit-signin"
               >
-                <span>Se connecter</span>
-                <ArrowRight className="w-4 h-4" />
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Connexion sécurisée...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Se connecter</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </form>
           ) : (
@@ -368,14 +380,30 @@ export const AuthPage: React.FC = () => {
 
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2"
+                disabled={isLoading}
+                className="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:opacity-70 text-white font-bold text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
                 id="auth-submit-signup"
               >
-                <span>Créer mon compte</span>
-                <ArrowRight className="w-4 h-4" />
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Création sécurisée...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Créer mon compte</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </form>
           )}
+
+          {/* Cloud Security Guarantee Badge */}
+          <div className="flex items-center justify-center gap-1.5 pt-1 text-[11px] font-semibold text-slate-500">
+            <ShieldCheck className="w-3.5 h-3.5 text-slate-700" />
+            <span>Authentification chiffrée & Base de données Cloud Firestore</span>
+          </div>
 
           {/* Quick Demo Test Accounts */}
           <div className="pt-4 border-t border-slate-100">

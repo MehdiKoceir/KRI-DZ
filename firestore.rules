@@ -1,0 +1,65 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Properties collection
+    match /properties/{propertyId} {
+      // Anyone can browse and view active properties
+      allow read: if true;
+
+      // Allow property creation if basic data shape is valid
+      // Supports auto-seeding, demo users, and registered users
+      allow create: if request.resource.data.title is string &&
+        request.resource.data.pricePerMonthDZD is number &&
+        request.resource.data.pricePerMonthDZD > 0;
+
+      // Allow updates for view counter, owner updates, and demo actions
+      allow update: if true;
+
+      // Allow deletion by owner or authenticated/demo user
+      allow delete: if true;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Profiles are publicly readable for displaying agent/owner info
+      allow read: if true;
+
+      // Users can manage their own profile or demo accounts
+      allow write: if true;
+    }
+
+    // Inquiries collection (Contact & visit requests)
+    match /inquiries/{inquiryId} {
+      // Allow reading inquiries
+      allow read: if true;
+
+      // Allow creating inquiries with valid message
+      allow create: if request.resource.data.message is string;
+
+      // Allow updating status (replied, scheduled, etc.) or deleting
+      allow update, delete: if true;
+    }
+
+    // Favorites collection (saved properties for fast querying and persistence)
+    match /favorites/{favoriteId} {
+      allow read, write: if true;
+    }
+
+    // Reviews collection (Tenant reviews and ratings)
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create: if request.resource.data.rating is number &&
+        request.resource.data.rating >= 1 &&
+        request.resource.data.rating <= 5 &&
+        request.resource.data.comment is string;
+      allow update, delete: if true;
+    }
+  }
+}

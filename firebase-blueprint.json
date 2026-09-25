@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "KriDZ Firebase Blueprint",
+  "description": "Production database schema for KriDZ Algerian real estate rental platform",
+  "entities": {
+    "Property": {
+      "collection": "properties",
+      "fields": {
+        "title": { "type": "string", "description": "Titre de l'annonce" },
+        "description": { "type": "string", "description": "Description détaillée du bien" },
+        "propertyType": { "type": "string", "description": "Type: apartment, villa, studio, student, duplex" },
+        "city": { "type": "string", "description": "Commune / Ville" },
+        "wilayaCode": { "type": "string", "description": "Code de la wilaya (ex: 16, 31, 09)" },
+        "wilayaName": { "type": "string", "description": "Nom de la wilaya" },
+        "neighborhood": { "type": "string", "description": "Quartier" },
+        "address": { "type": "string", "description": "Adresse facultative" },
+        "pricePerMonthDZD": { "type": "number", "description": "Loyer mensuel en DZD" },
+        "depositDZD": { "type": "number", "description": "Caution / Dépôt de garantie en DZD" },
+        "paymentFrequency": { "type": "string", "description": "Fréquence de paiement (monthly, quarterly, semiannual, annual)" },
+        "surfaceM2": { "type": "number", "description": "Superficie en m²" },
+        "rooms": { "type": "number", "description": "Nombre de pièces (F1, F2, F3...)" },
+        "bathrooms": { "type": "number", "description": "Nombre de salles de bain" },
+        "floor": { "type": "number", "description": "Étage" },
+        "isFurnished": { "type": "boolean", "description": "Meublé ou non" },
+        "isStudentFriendly": { "type": "boolean", "description": "Idéal pour étudiants" },
+        "isFeatured": { "type": "boolean", "description": "Mise en avant" },
+        "isAvailable": { "type": "boolean", "description": "Disponibilité" },
+        "status": { "type": "string", "description": "Statut (active, rented, paused)" },
+        "availabilityDate": { "type": "string", "description": "Date de disponibilité" },
+        "amenities": { "type": "array", "description": "Équipements (clim, citerne, wifi, etc.)" },
+        "images": { "type": "array", "description": "URLs des photos" },
+        "ownerId": { "type": "string", "description": "Identifiant du bailleur" },
+        "ownerName": { "type": "string", "description": "Nom du bailleur" },
+        "ownerPhone": { "type": "string", "description": "Numéro de téléphone" },
+        "ownerWhatsapp": { "type": "string", "description": "Numéro WhatsApp" },
+        "ownerType": { "type": "string", "description": "Particulier ou agence" },
+        "ownerVerified": { "type": "boolean", "description": "Bailleur vérifié" },
+        "viewsCount": { "type": "number", "description": "Compteur de vues" },
+        "inquiriesCount": { "type": "number", "description": "Nombre de demandes" },
+        "createdAt": { "type": "string", "description": "Date de création ISO" }
+      }
+    },
+    "User": {
+      "collection": "users",
+      "fields": {
+        "name": { "type": "string", "description": "Nom complet de l'utilisateur" },
+        "email": { "type": "string", "description": "Email" },
+        "phone": { "type": "string", "description": "Téléphone mobile (+213...)" },
+        "role": { "type": "string", "description": "Rôle (tenant, owner, agency)" },
+        "avatar": { "type": "string", "description": "Photo de profil" },
+        "bio": { "type": "string", "description": "Biographie / Description" },
+        "agencyName": { "type": "string", "description": "Nom de l'agence si applicable" },
+        "favorites": { "type": "array", "description": "IDs des annonces favorites" },
+        "createdAt": { "type": "string", "description": "Date d'inscription" }
+      }
+    },
+    "Inquiry": {
+      "collection": "inquiries",
+      "fields": {
+        "propertyId": { "type": "string", "description": "ID du bien immobilier" },
+        "propertyTitle": { "type": "string", "description": "Titre du bien" },
+        "propertyPriceDZD": { "type": "number", "description": "Loyer mensuel" },
+        "propertyCity": { "type": "string", "description": "Ville du bien" },
+        "propertyImage": { "type": "string", "description": "Photo principale" },
+        "tenantId": { "type": "string", "description": "ID du locataire demandeur" },
+        "tenantName": { "type": "string", "description": "Nom complet du locataire" },
+        "tenantEmail": { "type": "string", "description": "Email du locataire" },
+        "tenantPhone": { "type": "string", "description": "Téléphone du locataire" },
+        "ownerId": { "type": "string", "description": "ID du propriétaire destinataire" },
+        "ownerName": { "type": "string", "description": "Nom du propriétaire" },
+        "message": { "type": "string", "description": "Message ou demande de visite" },
+        "moveInDate": { "type": "string", "description": "Date d'emménagement souhaitée" },
+        "status": { "type": "string", "description": "Statut (pending, replied, visit_scheduled, closed)" },
+        "createdAt": { "type": "string", "description": "Date d'envoi" }
+      }
+    },
+    "Favorite": {
+      "collection": "favorites",
+      "fields": {
+        "userId": { "type": "string", "description": "Identifiant de l'utilisateur" },
+        "propertyId": { "type": "string", "description": "Identifiant du bien immobilier mis en favori" },
+        "createdAt": { "type": "string", "description": "Date d'ajout en favoris" }
+      }
+    },
+    "Review": {
+      "collection": "reviews",
+      "fields": {
+        "propertyId": { "type": "string", "description": "ID du bien immobilier noté" },
+        "tenantId": { "type": "string", "description": "ID de l'auteur de l'avis" },
+        "tenantName": { "type": "string", "description": "Nom complet du locataire" },
+        "tenantAvatar": { "type": "string", "description": "Photo de profil ou avatar" },
+        "rating": { "type": "number", "description": "Note globale sur 5" },
+        "criteriaRatings": { "type": "object", "description": "Sous-notes (emplacement, conformité, réactivité, rapport qualité/prix)" },
+        "comment": { "type": "string", "description": "Commentaire détaillé de l'expérience" },
+        "rentalPeriod": { "type": "string", "description": "Durée ou période de location" },
+        "isVerifiedTenant": { "type": "boolean", "description": "Locataire certifié" },
+        "createdAt": { "type": "string", "description": "Date de publication ISO" }
+      }
+    }
+  }
+}

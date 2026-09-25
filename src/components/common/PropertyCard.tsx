@@ -36,6 +36,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout = '
             alt={property.title}
             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
             loading="lazy"
+            referrerPolicy="no-referrer"
           />
 
           {/* Neutral Badges */}
@@ -54,10 +55,15 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout = '
           <button
             type="button"
             onClick={handleFavoriteClick}
-            className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white text-slate-700 hover:text-slate-900 shadow-sm transition-all z-10"
+            aria-label={favorited ? 'Retirer des favoris' : 'Enregistrer dans mes favoris'}
+            className={`absolute top-3 right-3 p-2 rounded-full shadow-sm transition-all duration-200 z-10 ${
+              favorited 
+                ? 'bg-white text-rose-500 hover:bg-rose-50 scale-105' 
+                : 'bg-white/90 hover:bg-white text-slate-700 hover:text-rose-500 hover:scale-105'
+            }`}
             title={favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           >
-            <Heart className={`w-4 h-4 ${favorited ? 'text-slate-900 fill-slate-900' : ''}`} />
+            <Heart className={`w-4 h-4 transition-transform active:scale-125 ${favorited ? 'text-rose-500 fill-rose-500' : ''}`} />
           </button>
         </div>
 
@@ -133,6 +139,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout = '
           alt={property.title}
           className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
           loading="lazy"
+          referrerPolicy="no-referrer"
         />
 
         {/* Subtle shadow overlay */}
@@ -159,10 +166,15 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout = '
         <button
           type="button"
           onClick={handleFavoriteClick}
-          className="absolute top-3 right-3 p-2 rounded-full bg-white/90 hover:bg-white text-slate-700 hover:text-slate-900 shadow-sm transition-all z-10"
+          aria-label={favorited ? 'Retirer des favoris' : 'Enregistrer dans mes favoris'}
+          className={`absolute top-3 right-3 p-2 rounded-full shadow-sm transition-all duration-200 z-10 ${
+            favorited 
+              ? 'bg-white text-rose-500 hover:bg-rose-50 scale-105' 
+              : 'bg-white/90 hover:bg-white text-slate-700 hover:text-rose-500 hover:scale-105'
+          }`}
           title={favorited ? 'Retirer des favoris' : 'Ajouter aux favoris'}
         >
-          <Heart className={`w-4 h-4 ${favorited ? 'text-slate-900 fill-slate-900' : ''}`} />
+          <Heart className={`w-4 h-4 transition-transform active:scale-125 ${favorited ? 'text-rose-500 fill-rose-500' : ''}`} />
         </button>
 
         {/* Price Tag Overlaid at Bottom Left of Image */}

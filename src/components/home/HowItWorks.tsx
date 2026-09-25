@@ -6,7 +6,7 @@ export const HowItWorks: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'tenant' | 'owner'>('tenant');
 
   return (
-    <section id="how-it-works" className="py-16 sm:py-20 bg-slate-50 border-b border-slate-200">
+    <section id="how-it-works" className="py-16 sm:py-20 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center max-w-2xl mx-auto mb-12">
@@ -18,7 +18,7 @@ export const HowItWorks: React.FC = () => {
           </p>
 
           {/* Toggle pill */}
-          <div className="mt-6 inline-flex p-1 rounded-xl bg-slate-200">
+          <div className="mt-6 inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200">
             <button
               onClick={() => setActiveTab('tenant')}
               className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all ${

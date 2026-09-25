@@ -6,7 +6,7 @@ export const Footer: React.FC = () => {
   const { navigateTo } = useApp();
 
   return (
-    <footer className="bg-slate-950 text-slate-400 text-xs border-t border-slate-900">
+    <footer className="bg-white text-slate-600 text-xs border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           
@@ -18,10 +18,10 @@ export const Footer: React.FC = () => {
             >
               <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white">
                 <span className="font-extrabold text-lg">K</span>
-                <span className="text-emerald-400 font-bold text-xs ml-0.5">DZ</span>
+                <span className="text-slate-400 font-bold text-xs ml-0.5">DZ</span>
               </div>
               <div>
-                <span className="text-xl font-extrabold text-white tracking-tight">
+                <span className="text-xl font-extrabold text-slate-900 tracking-tight">
                   KriDZ
                 </span>
                 <p className="text-[11px] text-slate-500 font-medium">
@@ -30,11 +30,11 @@ export const Footer: React.FC = () => {
               </div>
             </div>
 
-            <p className="text-slate-400 text-xs leading-relaxed max-w-sm">
+            <p className="text-slate-600 text-xs leading-relaxed max-w-sm">
               Plateforme immobilière pour la location d’appartements, studios, villas et logements étudiants en Algérie. Contact direct propriétaires et agences sans frais cachés.
             </p>
 
-            <div className="space-y-2 pt-1 text-slate-400">
+            <div className="space-y-2 pt-1 text-slate-600">
               <div className="flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5 text-slate-500 shrink-0" />
                 <span>Alger, Wilaya d'Alger, Algérie</span>
@@ -52,24 +52,24 @@ export const Footer: React.FC = () => {
 
           {/* Col 2: Navigation Rapide */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
               Navigation
             </h4>
-            <ul className="space-y-2 font-medium">
+            <ul className="space-y-2 font-medium text-slate-600">
               <li>
-                <button onClick={() => navigateTo('home')} className="hover:text-white transition-colors">
+                <button onClick={() => navigateTo('home')} className="hover:text-slate-950 transition-colors">
                   Accueil
                 </button>
               </li>
               <li>
-                <button onClick={() => navigateTo('browse')} className="hover:text-white transition-colors">
+                <button onClick={() => navigateTo('browse')} className="hover:text-slate-950 transition-colors">
                   Toutes les annonces
                 </button>
               </li>
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { propertyType: 'student', isStudentFriendly: true })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Logements Étudiants
                 </button>
@@ -77,7 +77,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { propertyType: 'apartment' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Appartements F1 à F5
                 </button>
@@ -85,7 +85,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { propertyType: 'villa' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Villas & Maisons
                 </button>
@@ -95,14 +95,14 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Wilayas Populaires */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
               Villes & Wilayas
             </h4>
-            <ul className="space-y-2 font-medium">
+            <ul className="space-y-2 font-medium text-slate-600">
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { wilaya: 'Alger' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Location Alger (16)
                 </button>
@@ -110,7 +110,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { wilaya: 'Oran' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Location Oran (31)
                 </button>
@@ -118,7 +118,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { wilaya: 'Blida' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Location Blida (09)
                 </button>
@@ -126,7 +126,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { wilaya: 'Constantine' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Location Constantine (25)
                 </button>
@@ -134,7 +134,7 @@ export const Footer: React.FC = () => {
               <li>
                 <button 
                   onClick={() => navigateTo('browse', null, { wilaya: 'Chlef' })}
-                  className="hover:text-white transition-colors"
+                  className="hover:text-slate-950 transition-colors"
                 >
                   Location Chlef (02)
                 </button>
@@ -144,20 +144,20 @@ export const Footer: React.FC = () => {
 
           {/* Col 4: Confiance & Légal Algérie */}
           <div className="space-y-3">
-            <h4 className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider">
               Conseils Location Algérie
             </h4>
-            <ul className="space-y-2.5">
-              <li className="flex items-start gap-2 text-slate-400">
-                <ShieldCheck className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" />
+            <ul className="space-y-2.5 text-slate-600">
+              <li className="flex items-start gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-700 mt-0.5 shrink-0" />
                 <span>Privilégiez un contrat notarié conforme à la réglementation algérienne.</span>
               </li>
-              <li className="flex items-start gap-2 text-slate-400">
-                <ShieldCheck className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" />
+              <li className="flex items-start gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-700 mt-0.5 shrink-0" />
                 <span>Vérifiez la présence d'une bâche à eau ou citerne lors de la visite.</span>
               </li>
-              <li className="flex items-start gap-2 text-slate-400">
-                <ShieldCheck className="w-3.5 h-3.5 text-slate-400 mt-0.5 shrink-0" />
+              <li className="flex items-start gap-2">
+                <ShieldCheck className="w-3.5 h-3.5 text-slate-700 mt-0.5 shrink-0" />
                 <span>Paiements clairs en Dinars Algériens (DZD) selon l'accord convenu.</span>
               </li>
             </ul>
@@ -166,7 +166,7 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-6 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
+        <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
           <p>© {new Date().getFullYear()} KriDZ — Plateforme de location immobilière en Algérie.</p>
           <div className="text-slate-500 text-xs">
             Marché immobilier algérien

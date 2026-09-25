@@ -25,10 +25,22 @@ export const TenantDashboard: React.FC = () => {
     toggleFavorite, 
     navigateTo, 
     updateUserProfile,
-    activeTenantTab
+    activeTenantTab,
+    setActiveTenantTab
   } = useApp();
 
   const [tab, setTab] = useState<string>(activeTenantTab || 'overview');
+
+  React.useEffect(() => {
+    if (activeTenantTab) {
+      setTab(activeTenantTab);
+    }
+  }, [activeTenantTab]);
+
+  const handleTabChange = (newTab: string) => {
+    setTab(newTab);
+    setActiveTenantTab(newTab);
+  };
   
   // Profile edit fields
   const [name, setName] = useState(user?.name || '');
@@ -71,7 +83,7 @@ export const TenantDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/70 py-8">
+    <div className="min-h-screen bg-white py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Welcome Header */}
@@ -266,38 +278,80 @@ export const TenantDashboard: React.FC = () => {
 
         {/* TAB 2: FAVORITES */}
         {tab === 'favorites' && (
-          <div>
-            {savedPropertiesList.length === 0 ? (
-              <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-xs">
-                <div className="w-14 h-14 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center mx-auto mb-4">
-                  <Heart className="w-6 h-6" />
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50 border border-slate-200/80 p-5 rounded-2xl">
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base sm:text-lg font-bold text-slate-900">
+                    Mes Biens Enregistrés ({savedPropertiesList.length})
+                  </h2>
                 </div>
-                <h3 className="text-lg font-bold text-slate-900">Aucun bien dans vos favoris</h3>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-sm mx-auto mb-6">
-                  Sauvegardez des annonces pour les retrouver et les comparer à tout moment.
+                <p className="text-xs text-slate-500 mt-1">
+                  Accédez à tout moment à vos annonces favorites depuis n'importe quel appareil.
                 </p>
+              </div>
+
+              {savedPropertiesList.length > 0 && (
                 <button
                   onClick={() => navigateTo('browse')}
-                  className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors"
+                  className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-xs flex items-center justify-center gap-1.5 shrink-0"
                 >
-                  Explorer les annonces
+                  <Search className="w-3.5 h-3.5" />
+                  <span>Ajouter d'autres biens</span>
                 </button>
+              )}
+            </div>
+
+            {savedPropertiesList.length === 0 ? (
+              <div className="bg-white rounded-3xl p-12 text-center border border-slate-200 shadow-xs">
+                <div className="w-14 h-14 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center mx-auto mb-4 border border-rose-100">
+                  <Heart className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-slate-900">Aucun bien dans vos favoris pour le moment</h3>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1.5 max-w-sm mx-auto mb-6">
+                  Cliquez sur l'icône de cœur sur n'importe quelle annonce pour l'enregistrer ici et la retrouver plus tard.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={() => navigateTo('browse')}
+                    className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-bold hover:bg-slate-800 transition-colors shadow-xs"
+                  >
+                    Parcourir les annonces
+                  </button>
+                  <button
+                    onClick={() => navigateTo('browse', null, { wilaya: 'Alger' })}
+                    className="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-colors"
+                  >
+                    Voir les biens à Alger
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {savedPropertiesList.map(property => (
-                  <div key={property.id} className="relative group">
-                    <PropertyCard property={property} layout="grid" />
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        toggleFavorite(property.id);
-                      }}
-                      className="mt-2 w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold border border-slate-200 transition-colors flex items-center justify-center gap-1.5"
-                    >
-                      <Trash2 className="w-3.5 h-3.5 text-slate-500" />
-                      <span>Retirer de mes favoris</span>
-                    </button>
+                  <div key={property.id} className="relative group flex flex-col h-full">
+                    <div className="flex-1">
+                      <PropertyCard property={property} layout="grid" />
+                    </div>
+                    <div className="mt-2.5 flex items-center gap-2">
+                      <button
+                        onClick={() => navigateTo('property-details', property.id)}
+                        className="flex-1 py-2 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-colors text-center shadow-xs flex items-center justify-center gap-1.5"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        <span>Voir détails & contact</span>
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleFavorite(property.id);
+                        }}
+                        className="p-2 rounded-xl bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 border border-slate-200 hover:border-rose-200 transition-colors shadow-xs"
+                        title="Retirer des favoris (Firestore)"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
