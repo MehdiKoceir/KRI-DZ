@@ -55,6 +55,8 @@ export const INITIAL_PROPERTIES: Property[] = [
     ownerVerified: true,
     viewsCount: 342,
     inquiriesCount: 18,
+    rating: 4.8,
+    reviewsCount: 2,
     createdAt: '2026-03-01T10:00:00Z'
   },
   {
@@ -102,6 +104,8 @@ export const INITIAL_PROPERTIES: Property[] = [
     ownerVerified: true,
     viewsCount: 512,
     inquiriesCount: 29,
+    rating: 4.5,
+    reviewsCount: 2,
     createdAt: '2026-03-05T14:30:00Z'
   },
   {
@@ -148,6 +152,8 @@ export const INITIAL_PROPERTIES: Property[] = [
     ownerVerified: true,
     viewsCount: 289,
     inquiriesCount: 14,
+    rating: 5.0,
+    reviewsCount: 1,
     createdAt: '2026-03-08T09:15:00Z'
   },
   {
@@ -199,6 +205,8 @@ export const INITIAL_PROPERTIES: Property[] = [
     ownerVerified: true,
     viewsCount: 470,
     inquiriesCount: 22,
+    rating: 4.8,
+    reviewsCount: 1,
     createdAt: '2026-03-02T16:00:00Z'
   },
   {
@@ -245,6 +253,8 @@ export const INITIAL_PROPERTIES: Property[] = [
     ownerVerified: true,
     viewsCount: 310,
     inquiriesCount: 16,
+    rating: 4.8,
+    reviewsCount: 1,
     createdAt: '2026-03-06T11:20:00Z'
   },
   {

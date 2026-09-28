@@ -101,7 +101,7 @@ export interface FilterState {
   isFurnished: boolean | null; // null = any
   isStudentFriendly: boolean | null;
   isAvailableNow: boolean | null;
-  sortBy: 'newest' | 'price_asc' | 'price_desc' | 'surface_desc';
+  sortBy: 'newest' | 'price_asc' | 'price_desc' | 'surface_desc' | 'rating_desc';
 }
 
 export interface AlgerianWilaya {

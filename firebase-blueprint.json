@@ -4,98 +4,147 @@
   "description": "Production database schema for KriDZ Algerian real estate rental platform",
   "entities": {
     "Property": {
-      "collection": "properties",
-      "fields": {
-        "title": { "type": "string", "description": "Titre de l'annonce" },
-        "description": { "type": "string", "description": "Description détaillée du bien" },
-        "propertyType": { "type": "string", "description": "Type: apartment, villa, studio, student, duplex" },
-        "city": { "type": "string", "description": "Commune / Ville" },
-        "wilayaCode": { "type": "string", "description": "Code de la wilaya (ex: 16, 31, 09)" },
-        "wilayaName": { "type": "string", "description": "Nom de la wilaya" },
-        "neighborhood": { "type": "string", "description": "Quartier" },
-        "address": { "type": "string", "description": "Adresse facultative" },
+      "title": "Property",
+      "description": "Annonce de location immobilière en Algérie",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 200, "description": "Titre de l'annonce" },
+        "description": { "type": "string", "maxLength": 5000, "description": "Description détaillée du bien" },
+        "propertyType": { "type": "string", "enum": ["apartment", "villa", "studio", "student", "duplex"] },
+        "city": { "type": "string", "maxLength": 100, "description": "Commune / Ville" },
+        "wilayaCode": { "type": "string", "maxLength": 10, "description": "Code wilaya" },
+        "wilayaName": { "type": "string", "maxLength": 100, "description": "Nom wilaya" },
+        "neighborhood": { "type": "string", "maxLength": 150, "description": "Quartier" },
+        "address": { "type": "string", "maxLength": 200, "description": "Adresse facultative" },
         "pricePerMonthDZD": { "type": "number", "description": "Loyer mensuel en DZD" },
-        "depositDZD": { "type": "number", "description": "Caution / Dépôt de garantie en DZD" },
-        "paymentFrequency": { "type": "string", "description": "Fréquence de paiement (monthly, quarterly, semiannual, annual)" },
+        "depositDZD": { "type": "number", "description": "Dépôt de garantie en DZD" },
+        "paymentFrequency": { "type": "string", "enum": ["monthly", "quarterly", "semiannual", "annual"] },
         "surfaceM2": { "type": "number", "description": "Superficie en m²" },
-        "rooms": { "type": "number", "description": "Nombre de pièces (F1, F2, F3...)" },
+        "rooms": { "type": "number", "description": "Nombre de pièces" },
         "bathrooms": { "type": "number", "description": "Nombre de salles de bain" },
         "floor": { "type": "number", "description": "Étage" },
-        "isFurnished": { "type": "boolean", "description": "Meublé ou non" },
-        "isStudentFriendly": { "type": "boolean", "description": "Idéal pour étudiants" },
+        "isFurnished": { "type": "boolean", "description": "Meublé" },
+        "isStudentFriendly": { "type": "boolean", "description": "Idéal étudiant" },
         "isFeatured": { "type": "boolean", "description": "Mise en avant" },
         "isAvailable": { "type": "boolean", "description": "Disponibilité" },
-        "status": { "type": "string", "description": "Statut (active, rented, paused)" },
-        "availabilityDate": { "type": "string", "description": "Date de disponibilité" },
-        "amenities": { "type": "array", "description": "Équipements (clim, citerne, wifi, etc.)" },
-        "images": { "type": "array", "description": "URLs des photos" },
-        "ownerId": { "type": "string", "description": "Identifiant du bailleur" },
-        "ownerName": { "type": "string", "description": "Nom du bailleur" },
-        "ownerPhone": { "type": "string", "description": "Numéro de téléphone" },
-        "ownerWhatsapp": { "type": "string", "description": "Numéro WhatsApp" },
-        "ownerType": { "type": "string", "description": "Particulier ou agence" },
-        "ownerVerified": { "type": "boolean", "description": "Bailleur vérifié" },
-        "viewsCount": { "type": "number", "description": "Compteur de vues" },
-        "inquiriesCount": { "type": "number", "description": "Nombre de demandes" },
-        "createdAt": { "type": "string", "description": "Date de création ISO" }
-      }
+        "status": { "type": "string", "enum": ["active", "rented", "paused"] },
+        "availabilityDate": { "type": "string", "maxLength": 100 },
+        "amenities": { "type": "array", "description": "Équipements" },
+        "images": { "type": "array", "description": "Photos" },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerName": { "type": "string", "maxLength": 150 },
+        "ownerPhone": { "type": "string", "maxLength": 50 },
+        "ownerWhatsapp": { "type": "string", "maxLength": 50 },
+        "ownerType": { "type": "string", "enum": ["individual", "agency"] },
+        "ownerVerified": { "type": "boolean" },
+        "viewsCount": { "type": "number" },
+        "inquiriesCount": { "type": "number" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["title", "pricePerMonthDZD", "propertyType", "city", "wilayaName", "ownerId", "ownerName"]
     },
     "User": {
-      "collection": "users",
-      "fields": {
-        "name": { "type": "string", "description": "Nom complet de l'utilisateur" },
-        "email": { "type": "string", "description": "Email" },
-        "phone": { "type": "string", "description": "Téléphone mobile (+213...)" },
-        "role": { "type": "string", "description": "Rôle (tenant, owner, agency)" },
-        "avatar": { "type": "string", "description": "Photo de profil" },
-        "bio": { "type": "string", "description": "Biographie / Description" },
-        "agencyName": { "type": "string", "description": "Nom de l'agence si applicable" },
-        "favorites": { "type": "array", "description": "IDs des annonces favorites" },
-        "createdAt": { "type": "string", "description": "Date d'inscription" }
-      }
+      "title": "User",
+      "description": "Profil utilisateur KriDZ (locataire, propriétaire, agence)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 150 },
+        "email": { "type": "string", "maxLength": 150 },
+        "phone": { "type": "string", "maxLength": 50 },
+        "role": { "type": "string", "enum": ["tenant", "owner", "agency"] },
+        "avatar": { "type": "string", "maxLength": 500 },
+        "bio": { "type": "string", "maxLength": 1000 },
+        "preferredCity": { "type": "string", "maxLength": 100 },
+        "budgetMinDZD": { "type": "number" },
+        "budgetMaxDZD": { "type": "number" },
+        "agencyName": { "type": "string", "maxLength": 150 },
+        "agencyLogo": { "type": "string", "maxLength": 500 },
+        "agencyRegisterNumber": { "type": "string", "maxLength": 100 },
+        "favorites": { "type": "array" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "email", "role"]
     },
     "Inquiry": {
-      "collection": "inquiries",
-      "fields": {
-        "propertyId": { "type": "string", "description": "ID du bien immobilier" },
-        "propertyTitle": { "type": "string", "description": "Titre du bien" },
-        "propertyPriceDZD": { "type": "number", "description": "Loyer mensuel" },
-        "propertyCity": { "type": "string", "description": "Ville du bien" },
-        "propertyImage": { "type": "string", "description": "Photo principale" },
-        "tenantId": { "type": "string", "description": "ID du locataire demandeur" },
-        "tenantName": { "type": "string", "description": "Nom complet du locataire" },
-        "tenantEmail": { "type": "string", "description": "Email du locataire" },
-        "tenantPhone": { "type": "string", "description": "Téléphone du locataire" },
-        "ownerId": { "type": "string", "description": "ID du propriétaire destinataire" },
-        "ownerName": { "type": "string", "description": "Nom du propriétaire" },
-        "message": { "type": "string", "description": "Message ou demande de visite" },
-        "moveInDate": { "type": "string", "description": "Date d'emménagement souhaitée" },
-        "status": { "type": "string", "description": "Statut (pending, replied, visit_scheduled, closed)" },
-        "createdAt": { "type": "string", "description": "Date d'envoi" }
-      }
-    },
-    "Favorite": {
-      "collection": "favorites",
-      "fields": {
-        "userId": { "type": "string", "description": "Identifiant de l'utilisateur" },
-        "propertyId": { "type": "string", "description": "Identifiant du bien immobilier mis en favori" },
-        "createdAt": { "type": "string", "description": "Date d'ajout en favoris" }
-      }
+      "title": "Inquiry",
+      "description": "Demande de contact ou de visite pour un bien immobilier",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "propertyId": { "type": "string", "maxLength": 128 },
+        "propertyTitle": { "type": "string", "maxLength": 200 },
+        "propertyPriceDZD": { "type": "number" },
+        "propertyCity": { "type": "string", "maxLength": 150 },
+        "propertyImage": { "type": "string", "maxLength": 500 },
+        "tenantId": { "type": "string", "maxLength": 128 },
+        "tenantName": { "type": "string", "maxLength": 150 },
+        "tenantEmail": { "type": "string", "maxLength": 150 },
+        "tenantPhone": { "type": "string", "maxLength": 50 },
+        "ownerId": { "type": "string", "maxLength": 128 },
+        "ownerName": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 3000 },
+        "moveInDate": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["pending", "replied", "visit_scheduled", "closed"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["propertyId", "message", "tenantName", "ownerId"]
     },
     "Review": {
-      "collection": "reviews",
-      "fields": {
-        "propertyId": { "type": "string", "description": "ID du bien immobilier noté" },
-        "tenantId": { "type": "string", "description": "ID de l'auteur de l'avis" },
-        "tenantName": { "type": "string", "description": "Nom complet du locataire" },
-        "tenantAvatar": { "type": "string", "description": "Photo de profil ou avatar" },
-        "rating": { "type": "number", "description": "Note globale sur 5" },
-        "criteriaRatings": { "type": "object", "description": "Sous-notes (emplacement, conformité, réactivité, rapport qualité/prix)" },
-        "comment": { "type": "string", "description": "Commentaire détaillé de l'expérience" },
-        "rentalPeriod": { "type": "string", "description": "Durée ou période de location" },
-        "isVerifiedTenant": { "type": "boolean", "description": "Locataire certifié" },
-        "createdAt": { "type": "string", "description": "Date de publication ISO" }
-      }
+      "title": "Review",
+      "description": "Avis et note laissés par un locataire pour un bien immobilier",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "propertyId": { "type": "string", "maxLength": 128 },
+        "tenantId": { "type": "string", "maxLength": 128 },
+        "tenantName": { "type": "string", "maxLength": 150 },
+        "tenantAvatar": { "type": "string", "maxLength": 500 },
+        "rating": { "type": "number" },
+        "criteriaRatings": { "type": "object" },
+        "comment": { "type": "string", "maxLength": 3000 },
+        "rentalPeriod": { "type": "string", "maxLength": 100 },
+        "isVerifiedTenant": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["propertyId", "tenantName", "rating", "comment"]
+    },
+    "Favorite": {
+      "title": "Favorite",
+      "description": "Bien sauvegardé par un utilisateur",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "propertyId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["userId", "propertyId"]
+    }
+  },
+  "firestore": {
+    "/properties/{propertyId}": {
+      "schema": "Property",
+      "description": "Collection publique des annonces de location immobilière en Algérie"
+    },
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Profils utilisateurs (locataires, bailleurs particuliers, agences)"
+    },
+    "/inquiries/{inquiryId}": {
+      "schema": "Inquiry",
+      "description": "Demandes de visite et contacts privés entre locataires et propriétaires"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Avis et évaluations authentiques des logements par les locataires"
+    },
+    "/favorites/{favoriteId}": {
+      "schema": "Favorite",
+      "description": "Favoris enregistrés par les utilisateurs"
     }
   }
 }

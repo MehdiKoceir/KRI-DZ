@@ -13,11 +13,12 @@ import { PropertyDetailsPage } from './components/details/PropertyDetailsPage';
 import { AuthPage } from './components/auth/AuthPage';
 import { TenantDashboard } from './components/dashboard/TenantDashboard';
 import { OwnerDashboard } from './components/dashboard/OwnerDashboard';
+import { SecurityAuditModal } from './components/common/SecurityAuditModal';
 
 import { Heart, X } from 'lucide-react';
 
 const AppContent: React.FC = () => {
-  const { currentPage, toast, dismissToast } = useApp();
+  const { currentPage, toast, dismissToast, isAuditModalOpen, closeAuditModal } = useApp();
 
   // Scroll to top whenever the page route changes
   useEffect(() => {
@@ -49,6 +50,9 @@ const AppContent: React.FC = () => {
         {renderCurrentView()}
       </div>
       <Footer />
+
+      {/* Interactive Certification & Security Audit Modal (Dossier Cession & Vente) */}
+      <SecurityAuditModal isOpen={isAuditModalOpen} onClose={closeAuditModal} />
 
       {/* Real-time Toast feedback for favorites & actions */}
       {toast && (

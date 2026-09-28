@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Property, User, Inquiry, FilterState, Language, UserRole, ListingStatus, InquiryStatus, RecentSearch } from '../types';
+import { Property, User, Inquiry, FilterState, Language, UserRole, ListingStatus, InquiryStatus, RecentSearch, Review } from '../types';
 import { INITIAL_PROPERTIES } from '../data/mockProperties';
 import { DEMO_USERS, INITIAL_INQUIRIES } from '../data/mockUsers';
+import { INITIAL_REVIEWS } from '../data/mockReviews';
 import { 
   auth, 
   db, 
@@ -36,6 +37,7 @@ interface AppContextType {
   properties: Property[];
   favorites: string[];
   inquiries: Inquiry[];
+  reviews: Review[];
   language: Language;
   filters: FilterState;
   authMode: 'signin' | 'signup';
@@ -53,6 +55,10 @@ interface AppContextType {
   // Favorites
   toggleFavorite: (propertyId: string) => Promise<void>;
   isFavorited: (propertyId: string) => boolean;
+
+  // Reviews & Ratings
+  addReview: (review: Omit<Review, 'id' | 'createdAt'>) => Promise<{ success: boolean; error?: string }>;
+  deleteReview: (reviewId: string) => Promise<void>;
   
   // Toast notifications
   toast: { message: string; type: 'success' | 'info' | 'warning' } | null;
@@ -88,6 +94,11 @@ interface AppContextType {
   addRecentSearch: (search: { label?: string; details?: string; filters: Partial<FilterState> }) => void;
   removeRecentSearch: (id: string) => void;
   clearRecentSearches: () => void;
+
+  // Security & Sale Audit Modal
+  isAuditModalOpen: boolean;
+  openAuditModal: () => void;
+  closeAuditModal: () => void;
 }
 
 export const formatSearchDescription = (filters: Partial<FilterState>): { label: string; details?: string } => {
@@ -203,6 +214,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [activeOwnerTab, setActiveOwnerTab] = useState<string>('overview');
   const [language, setLanguageState] = useState<Language>('fr');
   const [isCloudConnected, setIsCloudConnected] = useState<boolean>(false);
+  const [isAuditModalOpen, setIsAuditModalOpen] = useState<boolean>(false);
+
+  const openAuditModal = () => setIsAuditModalOpen(true);
+  const closeAuditModal = () => setIsAuditModalOpen(false);
 
   // Filter state
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
@@ -244,6 +259,16 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return saved ? JSON.parse(saved) : INITIAL_INQUIRIES;
     } catch {
       return INITIAL_INQUIRIES;
+    }
+  });
+
+  // Reviews state
+  const [reviews, setReviews] = useState<Review[]>(() => {
+    try {
+      const saved = localStorage.getItem('kridz_reviews');
+      return saved ? JSON.parse(saved) : INITIAL_REVIEWS;
+    } catch {
+      return INITIAL_REVIEWS;
     }
   });
 
@@ -382,6 +407,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => unsubscribe();
   }, []);
 
+  // 4. Firestore Reviews Real-time Listener & Auto-Seed
+  useEffect(() => {
+    const reviewsCol = collection(db, 'reviews');
+    const unsubscribe = onSnapshot(reviewsCol, async (snapshot) => {
+      if (snapshot.empty) {
+        // Auto-seed initial Algerian property reviews
+        try {
+          const batch = writeBatch(db);
+          INITIAL_REVIEWS.forEach(r => {
+            const docRef = doc(db, 'reviews', r.id);
+            batch.set(docRef, r);
+          });
+          await batch.commit();
+        } catch (seedErr) {
+          console.warn('Auto-seed reviews note:', seedErr);
+        }
+      } else {
+        const loadedReviews: Review[] = [];
+        snapshot.forEach(docSnap => {
+          loadedReviews.push({ ...docSnap.data(), id: docSnap.id } as Review);
+        });
+        loadedReviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        setReviews(loadedReviews);
+        try {
+          localStorage.setItem('kridz_reviews', JSON.stringify(loadedReviews));
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }, (error) => {
+      console.warn('Firestore reviews snapshot note (using local cache):', error);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   // Local storage caching for offline resilience
   useEffect(() => {
     try {
@@ -418,6 +479,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       console.error(e);
     }
   }, [inquiries]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('kridz_reviews', JSON.stringify(reviews));
+    } catch (e) {
+      console.error(e);
+    }
+  }, [reviews]);
 
   // Recent Searches state with local storage persistence
   const [recentSearches, setRecentSearches] = useState<RecentSearch[]>(() => {
@@ -683,6 +752,88 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
   };
 
+  // Reviews & Ratings (Tenant reviews stored in Firestore)
+  const addReview = async (reviewData: Omit<Review, 'id' | 'createdAt'>): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const reviewId = `rev-${Date.now()}`;
+      const newReview: Review = {
+        ...reviewData,
+        id: reviewId,
+        createdAt: new Date().toISOString()
+      };
+
+      // 1. Optimistic local update
+      setReviews(prev => [newReview, ...prev]);
+
+      // 2. Compute updated property rating and reviews count
+      const existingReviews = reviews.filter(r => r.propertyId === reviewData.propertyId);
+      const allPropReviews = [newReview, ...existingReviews];
+      const newReviewsCount = allPropReviews.length;
+      const sumRatings = allPropReviews.reduce((sum, r) => sum + r.rating, 0);
+      const newAvgRating = Math.round((sumRatings / newReviewsCount) * 10) / 10;
+
+      setProperties(prev => prev.map(p => {
+        if (p.id === reviewData.propertyId) {
+          return { ...p, rating: newAvgRating, reviewsCount: newReviewsCount };
+        }
+        return p;
+      }));
+
+      // 3. Write review to Firestore
+      const revDocRef = doc(db, 'reviews', reviewId);
+      await setDoc(revDocRef, newReview);
+
+      // 4. Update rating on property document in Firestore
+      const propDocRef = doc(db, 'properties', reviewData.propertyId);
+      await updateDoc(propDocRef, {
+        rating: newAvgRating,
+        reviewsCount: newReviewsCount
+      }).catch(err => console.warn('Could not update property rating in firestore:', err));
+
+      showToast('Votre avis et note ont été enregistrés avec succès !', 'success');
+      return { success: true };
+    } catch (err: any) {
+      console.error('Error adding review to Firestore:', err);
+      showToast('Erreur lors de la publication de votre avis.', 'warning');
+      return { success: false, error: err.message || 'Erreur lors de la publication de l\'avis' };
+    }
+  };
+
+  const deleteReview = async (reviewId: string) => {
+    try {
+      const revToDelete = reviews.find(r => r.id === reviewId);
+      if (!revToDelete) return;
+
+      const remainingReviews = reviews.filter(r => r.id !== reviewId);
+      setReviews(remainingReviews);
+
+      const propReviews = remainingReviews.filter(r => r.propertyId === revToDelete.propertyId);
+      const newReviewsCount = propReviews.length;
+      const newAvgRating = newReviewsCount > 0
+        ? Math.round((propReviews.reduce((sum, r) => sum + r.rating, 0) / newReviewsCount) * 10) / 10
+        : undefined;
+
+      setProperties(prev => prev.map(p => {
+        if (p.id === revToDelete.propertyId) {
+          return { ...p, rating: newAvgRating, reviewsCount: newReviewsCount };
+        }
+        return p;
+      }));
+
+      await deleteDoc(doc(db, 'reviews', reviewId));
+      if (revToDelete.propertyId) {
+        await updateDoc(doc(db, 'properties', revToDelete.propertyId), {
+          rating: newAvgRating ?? 0,
+          reviewsCount: newReviewsCount
+        }).catch(err => console.warn('Could not update property rating in firestore:', err));
+      }
+
+      showToast('Avis supprimé.', 'info');
+    } catch (err) {
+      console.error('Error deleting review from Firestore:', err);
+    }
+  };
+
   // Firebase Authentication: Sign Up
   const signUpWithFirebase = async (data: {
     name: string;
@@ -865,6 +1016,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         properties,
         favorites,
         inquiries,
+        reviews,
         language,
         filters,
         authMode,
@@ -878,6 +1030,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         setActiveOwnerTab,
         toggleFavorite,
         isFavorited,
+        addReview,
+        deleteReview,
         toast,
         showToast,
         dismissToast,
@@ -900,7 +1054,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         recentSearches,
         addRecentSearch,
         removeRecentSearch,
-        clearRecentSearches
+        clearRecentSearches,
+        isAuditModalOpen,
+        openAuditModal,
+        closeAuditModal
       }}
     >
       {children}

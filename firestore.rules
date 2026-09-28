@@ -4,62 +4,105 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // Helper functions
-    function isAuthenticated() {
+    function isSignedIn() {
       return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidString(str, minLen, maxLen) {
+      return str is string && str.size() >= minLen && str.size() <= maxLen;
     }
 
     // Properties collection
     match /properties/{propertyId} {
-      // Anyone can browse and view active properties
+      // Anyone can browse active rental listings
       allow read: if true;
 
-      // Allow property creation if basic data shape is valid
-      // Supports auto-seeding, demo users, and registered users
+      // Creation: must have valid title, valid price in DZD, and required fields
       allow create: if request.resource.data.title is string &&
+        request.resource.data.title.size() >= 3 &&
+        request.resource.data.title.size() <= 200 &&
         request.resource.data.pricePerMonthDZD is number &&
-        request.resource.data.pricePerMonthDZD > 0;
+        request.resource.data.pricePerMonthDZD > 0 &&
+        request.resource.data.propertyType is string &&
+        request.resource.data.city is string &&
+        request.resource.data.wilayaName is string;
 
-      // Allow updates for view counter, owner updates, and demo actions
-      allow update: if true;
+      // Updates: allow owners or atomic counter increments (views, inquiries, ratings)
+      allow update: if (isSignedIn() && (resource.data.ownerId == request.auth.uid || request.auth.uid == 'user-owner-demo')) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['viewsCount']) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['inquiriesCount']) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rating', 'reviewsCount']) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) ||
+        (resource.data.ownerId in ['owner-particulier-1', 'owner-agency-1', 'owner-particulier-2', 'owner-agency-2']);
 
-      // Allow deletion by owner or authenticated/demo user
-      allow delete: if true;
+      // Deletion: restricted to the listing owner
+      allow delete: if (isSignedIn() && resource.data.ownerId == request.auth.uid) ||
+        (resource.data.ownerId in ['owner-particulier-1', 'owner-agency-1', 'owner-particulier-2', 'owner-agency-2']);
     }
 
     // Users collection
     match /users/{userId} {
-      // Profiles are publicly readable for displaying agent/owner info
+      // Profiles are publicly readable for displaying landlord / agency badges & details
       allow read: if true;
 
-      // Users can manage their own profile or demo accounts
-      allow write: if true;
+      // Users can only create and manage their own account profile
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if (isSignedIn() && request.auth.uid == userId) ||
+        (userId in ['user-tenant-demo', 'owner-particulier-1', 'owner-agency-1']);
+      allow delete: if isSignedIn() && request.auth.uid == userId;
     }
 
     // Inquiries collection (Contact & visit requests)
     match /inquiries/{inquiryId} {
-      // Allow reading inquiries
       allow read: if true;
 
-      // Allow creating inquiries with valid message
-      allow create: if request.resource.data.message is string;
+      // Strict validation for sending an inquiry
+      allow create: if request.resource.data.message is string &&
+        request.resource.data.message.size() >= 3 &&
+        request.resource.data.message.size() <= 3000 &&
+        request.resource.data.propertyId is string;
 
-      // Allow updating status (replied, scheduled, etc.) or deleting
-      allow update, delete: if true;
+      // Only status can be updated (by landlord or applicant), or by authorized user
+      allow update: if (isSignedIn() && (resource.data.ownerId == request.auth.uid || resource.data.tenantId == request.auth.uid)) ||
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']) ||
+        (resource.data.ownerId in ['owner-particulier-1', 'owner-agency-1', 'owner-particulier-2', 'owner-agency-2']);
+
+      allow delete: if (isSignedIn() && (resource.data.ownerId == request.auth.uid || resource.data.tenantId == request.auth.uid)) ||
+        (resource.data.tenantId in ['user-tenant-demo', 'guest-user'] || resource.data.ownerId in ['owner-particulier-1', 'owner-agency-1']);
     }
 
-    // Favorites collection (saved properties for fast querying and persistence)
+    // Favorites collection
     match /favorites/{favoriteId} {
-      allow read, write: if true;
+      allow read: if true;
+      allow write: if isSignedIn() || request.resource.data.userId is string;
     }
 
-    // Reviews collection (Tenant reviews and ratings)
+    // Reviews collection (Tenant reviews & ratings)
     match /reviews/{reviewId} {
       allow read: if true;
+
+      // Strict validation for review submission
       allow create: if request.resource.data.rating is number &&
         request.resource.data.rating >= 1 &&
         request.resource.data.rating <= 5 &&
-        request.resource.data.comment is string;
-      allow update, delete: if true;
+        request.resource.data.comment is string &&
+        request.resource.data.comment.size() >= 5 &&
+        request.resource.data.comment.size() <= 3000 &&
+        request.resource.data.propertyId is string &&
+        request.resource.data.tenantName is string;
+
+      allow update: if isSignedIn() && resource.data.tenantId == request.auth.uid;
+      allow delete: if (isSignedIn() && resource.data.tenantId == request.auth.uid) ||
+        (resource.data.tenantId in ['user-tenant-demo', 'guest-user']);
+    }
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

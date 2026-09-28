@@ -22,13 +22,15 @@ import {
   AlertTriangle, 
   Eye, 
   Clock, 
-  ExternalLink
+  ExternalLink,
+  Star
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import { formatDZD, formatPriceOnly, formatShortDate } from '../../utils/format';
 import { InquiryModal } from './InquiryModal';
 import { ReportModal } from './ReportModal';
 import { PropertyCard } from '../common/PropertyCard';
+import { PropertyReviewsSection } from '../reviews/PropertyReviewsSection';
 
 export const PropertyDetailsPage: React.FC = () => {
   const { 
@@ -215,10 +217,31 @@ export const PropertyDetailsPage: React.FC = () => {
                 {property.title}
               </h1>
 
-              <p className="text-xs sm:text-sm text-slate-600 font-medium flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
-                <span>{property.address || property.neighborhood}</span>
-              </p>
+              <div className="flex flex-wrap items-center justify-between gap-3 pt-1">
+                <p className="text-xs sm:text-sm text-slate-600 font-medium flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-slate-400 shrink-0" />
+                  <span>{property.address || property.neighborhood}</span>
+                </p>
+
+                {property.rating ? (
+                  <a
+                    href="#reviews-section"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 px-3 py-1 rounded-xl border border-amber-200/80 transition-colors shadow-2xs"
+                  >
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span>{property.rating.toFixed(1)} / 5</span>
+                    <span className="text-slate-500 font-normal">({property.reviewsCount || 1} avis locataires)</span>
+                  </a>
+                ) : (
+                  <a
+                    href="#reviews-section"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 bg-slate-50 hover:bg-slate-100 px-3 py-1 rounded-xl border border-slate-200 transition-colors"
+                  >
+                    <Star className="w-3.5 h-3.5 text-slate-400" />
+                    <span>Donner le premier avis</span>
+                  </a>
+                )}
+              </div>
 
               {/* Specs Pills */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-slate-100">
@@ -330,6 +353,9 @@ export const PropertyDetailsPage: React.FC = () => {
               </div>
             </div>
 
+            {/* Tenant Reviews & Ratings Section */}
+            <PropertyReviewsSection property={property} />
+
           </div>
 
           {/* Right Column: Sticky Pricing & Contact Owner Card */}
@@ -348,7 +374,21 @@ export const PropertyDetailsPage: React.FC = () => {
                   </span>
                   <span className="text-sm font-semibold text-slate-500">/ mois</span>
                 </div>
-                <p className="text-[11px] text-slate-500 font-medium mt-1">
+
+                {property.rating ? (
+                  <div className="flex items-center gap-2 mt-2 pt-2 border-t border-slate-100">
+                    <div className="flex items-center gap-1 text-amber-500">
+                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                      <span className="text-xs font-bold text-slate-900">{property.rating.toFixed(1)}</span>
+                    </div>
+                    <span className="text-slate-300">•</span>
+                    <a href="#reviews-section" className="text-xs text-slate-500 hover:text-slate-900 underline font-medium">
+                      {property.reviewsCount || 1} avis locataires
+                    </a>
+                  </div>
+                ) : null}
+
+                <p className="text-[11px] text-slate-500 font-medium mt-1.5">
                   Sans commission d'agence pour les locataires sur KriDZ
                 </p>
               </div>

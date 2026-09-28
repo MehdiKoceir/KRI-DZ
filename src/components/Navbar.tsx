@@ -12,7 +12,8 @@ import {
   Heart, 
   Building2, 
   ChevronDown,
-  Globe
+  Globe,
+  ShieldCheck
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -26,7 +27,8 @@ export const Navbar: React.FC = () => {
     favorites, 
     language, 
     setLanguage,
-    setActiveTenantTab
+    setActiveTenantTab,
+    openAuditModal
   } = useApp();
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

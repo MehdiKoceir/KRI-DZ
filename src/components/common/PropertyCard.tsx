@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heart, MapPin, Bed, Bath, Maximize2 } from 'lucide-react';
+import { Heart, MapPin, Bed, Bath, Maximize2, Star } from 'lucide-react';
 import { Property } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { formatDZD } from '../../utils/format';
@@ -75,9 +75,22 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout = '
                 <MapPin className="w-3.5 h-3.5 text-slate-400" />
                 {property.city}, {property.wilayaName} ({property.wilayaCode})
               </span>
-              <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
-                Wilaya {property.wilayaCode}
-              </span>
+              <div className="flex items-center gap-2">
+                {property.rating ? (
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
+                    <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    <span>{property.rating.toFixed(1)}</span>
+                    <span className="text-[10px] text-slate-500 font-normal">({property.reviewsCount || 1})</span>
+                  </span>
+                ) : (
+                  <span className="text-[10px] font-medium text-slate-500 bg-slate-50 px-2 py-0.5 rounded border border-slate-100">
+                    Nouveau
+                  </span>
+                )}
+                <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                  Wilaya {property.wilayaCode}
+                </span>
+              </div>
             </div>
 
             <h3 className="text-base sm:text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-slate-700 transition-colors">
@@ -196,15 +209,24 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ property, layout = '
       {/* Body details */}
       <div className="p-4 sm:p-5 flex flex-col justify-between flex-1 space-y-3">
         <div>
-          {/* Location line */}
-          <div className="flex items-center justify-between text-xs text-slate-500 mb-1">
-            <span className="font-medium text-slate-600 flex items-center gap-1 truncate">
+          {/* Location & Rating line */}
+          <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5">
+            <span className="font-medium text-slate-600 flex items-center gap-1 truncate max-w-[55%]">
               <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
               {property.city}, {property.wilayaName}
             </span>
-            <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold shrink-0">
-              W.{property.wilayaCode}
-            </span>
+            <div className="flex items-center gap-1.5 shrink-0">
+              {property.rating ? (
+                <span className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200/60">
+                  <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                  <span>{property.rating.toFixed(1)}</span>
+                  <span className="text-[9px] text-slate-500 font-normal">({property.reviewsCount || 1})</span>
+                </span>
+              ) : null}
+              <span className="text-[10px] bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded font-bold">
+                W.{property.wilayaCode}
+              </span>
+            </div>
           </div>
 
           {/* Title */}

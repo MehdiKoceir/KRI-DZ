@@ -38,6 +38,18 @@ export const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getA
 export const auth = getAuth(app);
 export const db = getFirestore(app, firebaseConfigData.firestoreDatabaseId || '(default)');
 
+// Validate connection to Firestore at boot
+async function validateFirestoreConnection() {
+  try {
+    await getDoc(doc(db, 'test', 'connection'));
+  } catch (error) {
+    if (error instanceof Error && error.message.includes('the client is offline')) {
+      console.warn("KriDZ note: Client offline or initializing Firestore connection.");
+    }
+  }
+}
+validateFirestoreConnection();
+
 export {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
