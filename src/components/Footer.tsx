@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, ShieldCheck } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 export const Footer: React.FC = () => {
-  const { navigateTo } = useApp();
+  const { navigateTo, openAuditModal } = useApp();
 
   return (
     <footer className="bg-white text-slate-600 text-xs border-t border-slate-200">
@@ -168,8 +168,15 @@ export const Footer: React.FC = () => {
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-500">
           <p>© {new Date().getFullYear()} KriDZ — Plateforme de location immobilière en Algérie.</p>
-          <div className="text-slate-500 text-xs">
-            Marché immobilier algérien
+          <div className="flex items-center gap-4 text-slate-500 text-xs">
+            <button
+              onClick={openAuditModal}
+              className="text-xs font-semibold text-emerald-700 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-lg flex items-center gap-1.5 transition-colors shadow-2xs"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Audit BDD & Sécurité (Vente)</span>
+            </button>
+            <span>Marché immobilier algérien</span>
           </div>
         </div>
 

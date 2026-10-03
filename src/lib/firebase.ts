@@ -14,6 +14,7 @@ import {
   doc, 
   setDoc, 
   getDoc, 
+  getDocFromServer,
   getDocs, 
   updateDoc, 
   deleteDoc, 
@@ -41,10 +42,10 @@ export const db = getFirestore(app, firebaseConfigData.firestoreDatabaseId || '(
 // Validate connection to Firestore at boot
 async function validateFirestoreConnection() {
   try {
-    await getDoc(doc(db, 'test', 'connection'));
+    await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
     if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.warn("KriDZ note: Client offline or initializing Firestore connection.");
+      console.error("Please check your Firebase configuration.");
     }
   }
 }
@@ -60,6 +61,7 @@ export {
   doc,
   setDoc,
   getDoc,
+  getDocFromServer,
   getDocs,
   updateDoc,
   deleteDoc,

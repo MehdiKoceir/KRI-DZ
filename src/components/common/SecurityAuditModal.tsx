@@ -14,7 +14,7 @@ import {
   AlertCircle 
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
-import { db, doc, getDoc } from '../../lib/firebase';
+import { db, doc, getDocFromServer } from '../../lib/firebase';
 import firebaseConfig from '../../../firebase-applet-config.json';
 
 interface SecurityAuditModalProps {
@@ -34,7 +34,7 @@ export const SecurityAuditModal: React.FC<SecurityAuditModalProps> = ({ isOpen, 
     setPingStatus({ status: 'testing' });
     const startTime = performance.now();
     try {
-      await getDoc(doc(db, 'test', 'connection'));
+      await getDocFromServer(doc(db, 'test', 'connection'));
       const elapsed = Math.round(performance.now() - startTime);
       setPingStatus({ 
         status: 'success', 

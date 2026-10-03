@@ -3,7 +3,6 @@ import {
   Home, 
   Search, 
   GraduationCap, 
-  HelpCircle, 
   PlusCircle, 
   User as UserIcon, 
   LogOut, 
@@ -105,24 +104,6 @@ export const Navbar: React.FC = () => {
               <GraduationCap className="w-4 h-4 text-slate-500" />
               Logement Étudiant
             </button>
-
-            <button
-              onClick={() => {
-                if (currentPage !== 'home') {
-                  handleNav('home');
-                  setTimeout(() => {
-                    document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                  }, 200);
-                } else {
-                  document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
-              className="px-3.5 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-slate-950 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
-              id="nav-link-how"
-            >
-              <HelpCircle className="w-4 h-4 text-slate-500" />
-              Comment ça marche
-            </button>
           </nav>
 
           {/* Right Action Area */}
@@ -165,6 +146,17 @@ export const Navbar: React.FC = () => {
                 </div>
               )}
             </div>
+
+            {/* Audit & Base de données button (Vérification pour vente) */}
+            <button
+              onClick={openAuditModal}
+              className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-emerald-200 bg-emerald-50/80 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold transition-all shadow-2xs"
+              title="Vérifier la sécurité et la base de données (Handover / Prêt pour vente)"
+              id="navbar-audit-btn"
+            >
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Audit BDD & Sécurité</span>
+            </button>
 
             {/* Favorites Icon */}
             <button

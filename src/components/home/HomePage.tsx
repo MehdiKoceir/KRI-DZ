@@ -1,25 +1,18 @@
 import React from 'react';
 import { HeroSection } from './HeroSection';
-import { RecentSearchesSection } from './RecentSearchesSection';
 import { FeaturedProperties } from './FeaturedProperties';
-import { PopularCities } from './PopularCities';
-import { StudentHousingSection } from './StudentHousingSection';
-import { WhyChooseKriDZ } from './WhyChooseKriDZ';
-import { HowItWorks } from './HowItWorks';
-import { TrustedPartners } from './TrustedPartners';
 import { CtaBanner } from './CtaBanner';
 
 export const HomePage: React.FC = () => {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-white">
+      {/* 1. Hero & Recherche Directe avec Puces de besoins en 1 clic */}
       <HeroSection />
-      <RecentSearchesSection />
+
+      {/* 2. Annonces disponibles immédiatement sous la recherche (pas de défilement superflu) */}
       <FeaturedProperties />
-      <PopularCities />
-      <StudentHousingSection />
-      <WhyChooseKriDZ />
-      <HowItWorks />
-      <TrustedPartners />
+
+      {/* 3. Bandeau compact pour les propriétaires et bailleurs */}
       <CtaBanner />
     </main>
   );
